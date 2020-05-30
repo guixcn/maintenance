@@ -1,0 +1,4 @@
+#+Title: Guix China服务器维护资源
+#+Author: Peng Mei Yu
+#+Copyright: Copyright 2020 Peng Mei Yu
+#+License: GPLv3
