@@ -41,6 +41,10 @@
       (locations (list (nginx-location-configuration
                         (uri "/")
                         (body '("proxy_pass https://guix-mirror.pengmeiyu.com;"
+                                "proxy_ssl_server_name on;"
+                                "proxy_ssl_name guix-mirror.pengmeiyu.com;"
+                                "proxy_set_header Host guix-mirror.pengmeiyu.com;"
+
                                 "proxy_cache guix-mirror;"
                                 "proxy_cache_valid 200 60d;"
                                 "proxy_cache_valid any 3m;"
