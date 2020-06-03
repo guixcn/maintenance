@@ -55,8 +55,8 @@
              (cache "/var/cache/guix/publish")
              (compression '(("lzip" 9)))
              (ttl (* 30 24 60 60))))
-   ;; (service certbot-service-type %certbot-configuration)
-   ;; (service nginx-service-type %nginx-configuration)
+   (service certbot-service-type %certbot-configuration)
+   (service nginx-service-type %nginx-configuration)
    (modify-services %base-services
      (guix-service-type
       config => (guix-configuration
