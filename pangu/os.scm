@@ -6,7 +6,7 @@
              (guix store))
 
 (use-package-modules shells)
-(use-service-modules networking ssh sysctl web)
+(use-service-modules networking nix ssh sysctl web)
 
 (include "web.scm")
 
@@ -27,8 +27,8 @@
    (map (compose list specification->package+output)
         '("bind:utils" "btrfs-progs" "certbot" "curl" "dosfstools" "emacs"
           "fish" "git" "gnupg" "guile-readline" "htop" "iftop" "nftables"
-          "nss-certs" "openssh" "pinentry" "python" "rsync" "stow" "tmux"
-          "tree" "wget" "zsh"
+          "nix" "nss-certs" "openssh" "pinentry" "python" "rsync" "stow"
+          "tmux" "tree" "wget" "zsh"
           "termite"))))
 
 (define %services
@@ -36,6 +36,7 @@
    (service dhcp-client-service-type)
    (service nftables-service-type
             (nftables-configuration (ruleset (local-file "nftables.conf"))))
+   (service nix-service-type)
    (service openssh-service-type
             (openssh-configuration
              (permit-root-login 'without-password)
