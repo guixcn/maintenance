@@ -4,6 +4,26 @@
              (gnu services web))
 
 
+(define %nginx-reload
+  (program-file "nginx-reload"
+                #~(let ((pid (call-with-input-file "/var/run/nginx/pid"
+                               read)))
+                    (kill pid SIGHUP))))
+
+(define %certbot-configuration
+  (certbot-configuration
+   (email "admin@guix.org.cn")
+   (certificates (list (certificate-configuration
+                        (domains '("guix.org.cn"
+                                   "www.guix.org.cn"))
+                        (deploy-hook %nginx-reload))
+                       (certificate-configuration
+                        (domains '("ci.guix.org.cn"))
+                        (deploy-hook %nginx-reload))
+                       (certificate-configuration
+                        (domains '("mirror.guix.org.cn"))
+                        (deploy-hook %nginx-reload))))))
+
 (define %nginx-configuration
   (nginx-configuration
    (server-blocks
@@ -65,23 +85,3 @@ proxy_cache_path /srv/cache/guix-mirror
     keys_zone=guix-mirror:8m  # about 8 thousand keys per megabyte
     max_size=40g;             # total cache data size
 ")))
-
-(define %nginx-reload
-  (program-file "nginx-reload"
-                #~(let ((pid (call-with-input-file "/var/run/nginx/pid"
-                               read)))
-                    (kill pid SIGHUP))))
-
-(define %certbot-configuration
-  (certbot-configuration
-   (email "admin@guix.org.cn")
-   (certificates (list (certificate-configuration
-                        (domains '("guix.org.cn"
-                                   "www.guix.org.cn"))
-                        (deploy-hook %nginx-reload))
-                       (certificate-configuration
-                        (domains '("ci.guix.org.cn"))
-                        (deploy-hook %nginx-reload))
-                       (certificate-configuration
-                        (domains '("mirror.guix.org.cn"))
-                        (deploy-hook %nginx-reload))))))
