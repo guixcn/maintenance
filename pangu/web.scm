@@ -1,6 +1,8 @@
 ;;; Copyright © 2020 Peng Mei Yu <pengmyu@gmail.com>
 
-(use-modules (gnu services certbot)
+(use-modules (gnu packages version-control)
+             (gnu services certbot)
+             (gnu services mcron)
              (gnu services version-control)
              (gnu services web))
 
@@ -31,6 +33,16 @@
     (export-all? #t)
     (git-root "/srv/git")
     (uri-path "/git/"))))
+
+(define %git-repository-mirror-jobs
+  (list #~(job '(next-minute (range 0 60 10))
+               #$(program-file
+                  "git-mirror-job"
+                  #~(begin
+                      (setenv "GIT_SSL_CAINFO" "/etc/ssl/certs/ca-certificates.crt")
+                      (system* #$(file-append git "/bin/git")
+                               "--git-dir=/srv/git/guix.git"
+                               "fetch"))))))
 
 (define %nginx-configuration
   (nginx-configuration
@@ -98,4 +110,7 @@ proxy_cache_path /srv/cache/guix-mirror
 (define %web-services
   (list (service certbot-service-type %certbot-configuration)
         (service fcgiwrap-service-type)
+        (simple-service 'git-repository-mirror-jobs
+                        mcron-service-type
+                        %git-repository-mirror-jobs)
         (service nginx-service-type %nginx-configuration)))
