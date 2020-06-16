@@ -1,6 +1,7 @@
 ;;; Copyright © 2020 Peng Mei Yu <pengmyu@gmail.com>
 
 (use-modules (gnu services certbot)
+             (gnu services version-control)
              (gnu services web))
 
 
@@ -23,6 +24,13 @@
                        (certificate-configuration
                         (domains '("mirror.guix.org.cn"))
                         (deploy-hook %nginx-reload))))))
+
+(define %git-http-nginx-location-configuration
+  (git-http-nginx-location-configuration
+   (git-http-configuration
+    (export-all? #t)
+    (git-root "/srv/git")
+    (uri-path "/git/"))))
 
 (define %nginx-configuration
   (nginx-configuration
@@ -74,7 +82,8 @@
                                 "client_body_buffer_size 256k;"
                                 "proxy_hide_header Set-Cookie;"
                                 "proxy_ignore_headers Set-Cookie;"
-                                "gzip off;")))))
+                                "gzip off;")))
+                       %git-http-nginx-location-configuration))
       (raw-content '("access_log /var/log/nginx/mirror.guix.org.cn.access.log;"
                      "error_log /var/log/nginx/mirror.guix.org.cn.error.log;")))))
    (extra-content "
