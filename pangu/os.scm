@@ -32,33 +32,32 @@
           "termite"))))
 
 (define %services
-  (cons*
-   (service dhcp-client-service-type)
-   (service nftables-service-type
-            (nftables-configuration (ruleset (local-file "nftables.conf"))))
-   (service nix-service-type)
-   (service openssh-service-type
-            (openssh-configuration
-             (permit-root-login 'without-password)
-             (password-authentication? #f)
-             (authorized-keys
-              `(("root" ,(plain-file "authorized_keys"
-                                     %ssh-public-key))
-                ("meiyu" ,(plain-file "authorized_keys"
-                                      %ssh-public-key))))))
-   (service sysctl-service-type
-            (sysctl-configuration
-             (settings '(("net.core.default_qdisc" . "fq")
-                         ("net.ipv4.tcp_congestion_control" . "bbr")))))
-   (service guix-publish-service-type
-            (guix-publish-configuration
-             (port 8181)
-             (cache "/var/cache/guix/publish")
-             (compression '(("lzip" 9)))
-             (ttl (* 30 24 60 60))))
-   (service certbot-service-type %certbot-configuration)
-   (service fcgiwrap-service-type)
-   (service nginx-service-type %nginx-configuration)
+  (append
+   (list
+    (service dhcp-client-service-type)
+    (service nftables-service-type
+             (nftables-configuration (ruleset (local-file "nftables.conf"))))
+    (service nix-service-type)
+    (service openssh-service-type
+             (openssh-configuration
+              (permit-root-login 'without-password)
+              (password-authentication? #f)
+              (authorized-keys
+               `(("root" ,(plain-file "authorized_keys"
+                                      %ssh-public-key))
+                 ("meiyu" ,(plain-file "authorized_keys"
+                                       %ssh-public-key))))))
+    (service sysctl-service-type
+             (sysctl-configuration
+              (settings '(("net.core.default_qdisc" . "fq")
+                          ("net.ipv4.tcp_congestion_control" . "bbr")))))
+    (service guix-publish-service-type
+             (guix-publish-configuration
+              (port 8181)
+              (cache "/var/cache/guix/publish")
+              (compression '(("lzip" 9)))
+              (ttl (* 30 24 60 60)))))
+   %web-services
    (modify-services %base-services
      (guix-service-type
       config => (guix-configuration

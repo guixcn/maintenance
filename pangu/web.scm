@@ -94,3 +94,8 @@ proxy_cache_path /srv/cache/guix-mirror
     keys_zone=guix-mirror:8m  # about 8 thousand keys per megabyte
     max_size=40g;             # total cache data size
 ")))
+
+(define %web-services
+  (list (service certbot-service-type %certbot-configuration)
+        (service fcgiwrap-service-type)
+        (service nginx-service-type %nginx-configuration)))
