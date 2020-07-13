@@ -44,6 +44,25 @@
                                "--git-dir=/srv/git/guix.git"
                                "fetch"))))))
 
+(define %guix-mirror-nginx-location-configuration
+  (nginx-location-configuration
+   (uri "~ ^/nix-cache-info|^/nar/|\\.narinfo$")
+   (body '("proxy_pass https://guix-mirror.pengmeiyu.com;"
+           "proxy_ssl_server_name on;"
+           "proxy_ssl_name guix-mirror.pengmeiyu.com;"
+           "proxy_set_header Host guix-mirror.pengmeiyu.com;"
+
+           "proxy_cache guix-mirror;"
+           "proxy_cache_valid 200 60d;"
+           "proxy_cache_valid any 3m;"
+           "proxy_connect_timeout 60s;"
+           "proxy_ignore_client_abort on;"
+
+           "client_body_buffer_size 256k;"
+           "proxy_hide_header Set-Cookie;"
+           "proxy_ignore_headers Set-Cookie;"
+           "gzip off;"))))
+
 (define %nginx-configuration
   (nginx-configuration
    (server-blocks
@@ -78,24 +97,17 @@
       (listen '("443 ssl" "[::]:443 ssl"))
       (ssl-certificate "/etc/letsencrypt/live/mirror.guix.org.cn/fullchain.pem")
       (ssl-certificate-key "/etc/letsencrypt/live/mirror.guix.org.cn/privkey.pem")
-      (locations (list (nginx-location-configuration
-                        (uri "/")
-                        (body '("proxy_pass https://guix-mirror.pengmeiyu.com;"
-                                "proxy_ssl_server_name on;"
-                                "proxy_ssl_name guix-mirror.pengmeiyu.com;"
-                                "proxy_set_header Host guix-mirror.pengmeiyu.com;"
-
-                                "proxy_cache guix-mirror;"
-                                "proxy_cache_valid 200 60d;"
-                                "proxy_cache_valid any 3m;"
-                                "proxy_connect_timeout 60s;"
-                                "proxy_ignore_client_abort on;"
-
-                                "client_body_buffer_size 256k;"
-                                "proxy_hide_header Set-Cookie;"
-                                "proxy_ignore_headers Set-Cookie;"
-                                "gzip off;")))
-                       %git-http-nginx-location-configuration))
+      (locations (list
+                  ;; Cuirass
+                  (nginx-location-configuration
+                   (uri "/")
+                   (body '("proxy_pass https://guix-mirror.pengmeiyu.com;"
+                           "proxy_ssl_server_name on;"
+                           "proxy_ssl_name guix-mirror.pengmeiyu.com;"
+                           "proxy_set_header Host guix-mirror.pengmeiyu.com;")))
+                  ;; Mirror
+                  %guix-mirror-nginx-location-configuration
+                  %git-http-nginx-location-configuration))
       (raw-content '("access_log /var/log/nginx/mirror.guix.org.cn.access.log;"
                      "error_log /var/log/nginx/mirror.guix.org.cn.error.log;")))))
    (extra-content "
