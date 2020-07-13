@@ -77,8 +77,8 @@
       (listen '("443 ssl" "[::]:443 ssl"))
       (ssl-certificate "/etc/letsencrypt/live/guix.org.cn/fullchain.pem")
       (ssl-certificate-key "/etc/letsencrypt/live/guix.org.cn/privkey.pem")
-      (root "/srv/www/guix.org.cn")
-      (raw-content '("access_log /var/log/nginx/guix.org.cn.access.log;"
+      (raw-content '("return 301 https://guix-china.github.io/;"
+                     "access_log /var/log/nginx/guix.org.cn.access.log;"
                      "error_log /var/log/nginx/guix.org.cn.error.log;")))
 
      (nginx-server-configuration
