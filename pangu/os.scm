@@ -19,7 +19,8 @@
   "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCj1ZPwtIShm3hMX7/uw151jVZeg927viEakb12/FTQ+gj+wmbEvnsjFvavLZ+u0e2yqijK0b/i/ptcJ/o1duNs228N4Nqib55HXPSsmq6nwOYyMk7DQc2KcjzCRPgqUsiQeFFKkDoWZGS5C7sJCO5QDfYIpfMSwKOSJM2TipdkWJlioP4xTS9ma+KtkNMc/B2ceMXRRyepF4DgaySOALE0dx1xcglwMKrqf9f7e1ceyc9sFNJRLEa5p9tvGWRmTNcb/WWybc1RHrxuUA7onB0MhqHYJgYpUy3q/kHk3vIeKLdATBILIPlj3uwwW62R0H6a3eKxqIwmL34hD+O/3D+WrtPWpTw4aRqoSyIH+tWnvKGz08yFlxcxkmxxwA1oXsTkRXXO6Wi3VJoWdcD6FIfknBj+m/v7veGECeavLSX5p3SLFQkftU62l82mNE7M/4yr2uXqRsSeHoQLarBaij+2eQilcOsVzxDD53xdSibPvz+jmSss+6WYqowyBuAimIQq9z6N2yzkfc772SwLDpab5AvLKNfmKQJXpZD+uT/cA5LiCcmo72CAJkp8e6OQqqtGpbVsFxRTf5uPlk8xC12RxBQzHpG0F8/ltLIBDvypktMBJ69hxI6yq9HjjMAK467VxHP1DeYtcr1KZNnVo0oQWBILuhMTtfpMf/m5LmS7yw== meiyu")
 
 (define %substitute-urls
-  '("https://mirror.guix.org.cn"))
+  '("https://mirror.guix.org.cn"
+    "https://ci.guix.gnu.org"))
 
 (define-public %packages
   (append
