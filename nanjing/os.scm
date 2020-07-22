@@ -71,7 +71,7 @@
                  (motd %motd))))))
 
 (operating-system
-  (host-name "pangu.guix.org.cn")
+  (host-name "nanjing.guix.org.cn")
   (timezone "Asia/Shanghai")
   (locale "en_US.UTF-8")
 
