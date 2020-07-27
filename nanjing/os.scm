@@ -28,7 +28,7 @@
    (map (compose list specification->package+output)
         '("bind:utils" "btrfs-progs" "certbot" "curl" "dosfstools" "emacs"
           "fish" "git" "gnupg" "guile-readline" "htop" "iftop" "nftables"
-          "nix" "nss-certs" "openssh" "pinentry" "python" "rsync" "stow"
+          "nss-certs" "openssh" "pinentry" "python" "rsync" "stow"
           "tmux" "tree" "wget" "zsh"
           "termite"))))
 
