@@ -1,4 +1,4 @@
-;;; Copyright © 2020 Peng Mei Yu <pengmyu@gmail.com>
+;;; Copyright © 2020 Peng Mei Yu <i@pengmeiyu.com>
 
 (use-modules (gnu packages version-control)
              (gnu services certbot)
