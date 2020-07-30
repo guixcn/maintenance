@@ -1,6 +1,7 @@
 ;;; Copyright © 2020 Peng Mei Yu <i@pengmeiyu.com>
 
 (use-modules (gnu packages version-control)
+             (gnu services admin)
              (gnu services certbot)
              (gnu services mcron)
              (gnu services version-control)
@@ -119,10 +120,22 @@ proxy_cache_path /srv/cache/guix-mirror
     max_size=40g;             # total cache data size
 ")))
 
+(define %web-log-rotations
+  (list (log-rotation
+         (files (list "/var/log/nginx/*.log"))
+         (frequency 'daily)
+         (post-rotate #~(let ((pid (call-with-input-file "/var/run/nginx/pid"
+                                     read)))
+                          (kill pid SIGUSR1)))
+         (options '("dateext")))))
+
 (define %web-services
   (list (service certbot-service-type %certbot-configuration)
         (service fcgiwrap-service-type)
+        (service nginx-service-type %nginx-configuration)
         (simple-service 'git-repository-mirror-jobs
                         mcron-service-type
                         %git-repository-mirror-jobs)
-        (service nginx-service-type %nginx-configuration)))
+        (simple-service 'web-log-rotations
+                        rottlog-service-type
+                        %web-log-rotations)))
