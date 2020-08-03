@@ -102,10 +102,10 @@
                   ;; Cuirass
                   (nginx-location-configuration
                    (uri "/")
-                   (body '("proxy_pass https://guix-mirror.pengmeiyu.com;"
+                   (body '("proxy_pass https://ci.guix.gnu.org;"
                            "proxy_ssl_server_name on;"
-                           "proxy_ssl_name guix-mirror.pengmeiyu.com;"
-                           "proxy_set_header Host guix-mirror.pengmeiyu.com;")))
+                           "proxy_ssl_name ci.guix.gnu.org;"
+                           "proxy_set_header Host ci.guix.gnu.org;")))
                   ;; Mirror
                   %guix-mirror-nginx-location-configuration
                   %git-http-nginx-location-configuration))
