@@ -127,7 +127,8 @@ proxy_cache_path /srv/cache/guix-mirror
          (post-rotate #~(let ((pid (call-with-input-file "/var/run/nginx/pid"
                                      read)))
                           (kill pid SIGUSR1)))
-         (options '("dateext")))))
+         (options '("nostoredir"
+                    "storefile @BASENAME-@YEAR@MONTH@DAY.@COMP_EXT")))))
 
 (define %web-services
   (list (service certbot-service-type %certbot-configuration)
