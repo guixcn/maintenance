@@ -112,6 +112,8 @@
       (raw-content '("access_log /var/log/nginx/mirror.guix.org.cn.access.log;"
                      "error_log /var/log/nginx/mirror.guix.org.cn.error.log;")))))
    (extra-content "
+resolver 114.114.114.114 9.9.9.9 ipv6=off;
+
 # cache for guix mirror
 proxy_cache_path /srv/cache/guix-mirror
     levels=2
