@@ -48,7 +48,8 @@
 (define %guix-mirror-nginx-location-configuration
   (nginx-location-configuration
    (uri "~ ^/nix-cache-info|^/nar/|\\.narinfo$")
-   (body '("proxy_pass https://guix-mirror.pengmeiyu.com;"
+   (body '("set $upstream \"https://guix-mirror.pengmeiyu.com\";"
+           "proxy_pass $upstream;"
            "proxy_ssl_server_name on;"
            "proxy_ssl_name guix-mirror.pengmeiyu.com;"
            "proxy_set_header Host guix-mirror.pengmeiyu.com;"
@@ -102,7 +103,8 @@
                   ;; Cuirass
                   (nginx-location-configuration
                    (uri "/")
-                   (body '("proxy_pass https://ci.guix.gnu.org;"
+                   (body '("set $upstream \"https://ci.guix.gnu.org\";"
+                           "proxy_pass $upstream;"
                            "proxy_ssl_server_name on;"
                            "proxy_ssl_name ci.guix.gnu.org;"
                            "proxy_set_header Host ci.guix.gnu.org;")))
