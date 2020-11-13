@@ -56,15 +56,16 @@
                                "fetch"))))))
 
 (define %guix-mirror-nginx-location-configurations
-  (let ((upstream "guix-mirror.pengmeiyu.com"))
+  (let* ((upstream "guix-mirror.pengmeiyu.com")
+         (domain upstream))
     (list (nginx-location-configuration
            (uri "~ \\.narinfo$")
            (body (list
                   (string-append "set $upstream \"https://" upstream "\";")
                   "proxy_pass $upstream;"
                   "proxy_ssl_server_name on;"
-                  (string-append "proxy_ssl_name " upstream ";")
-                  (string-append "proxy_set_header Host " upstream ";")
+                  (string-append "proxy_ssl_name " domain ";")
+                  (string-append "proxy_set_header Host " domain ";")
 
                   "proxy_cache narinfo;"
                   "proxy_cache_valid 200 206 60d;"
@@ -83,8 +84,8 @@
                   (string-append "set $upstream \"https://" upstream "\";")
                   "proxy_pass $upstream;"
                   "proxy_ssl_server_name on;"
-                  (string-append "proxy_ssl_name " upstream ";")
-                  (string-append "proxy_set_header Host " upstream ";")
+                  (string-append "proxy_ssl_name " domain ";")
+                  (string-append "proxy_set_header Host " domain ";")
 
                   "proxy_cache nar;"
                   "proxy_cache_valid 200 206 60d;"
