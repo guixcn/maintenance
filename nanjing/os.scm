@@ -74,6 +74,8 @@
   (timezone "Asia/Shanghai")
   (locale "en_US.UTF-8")
 
+  (firmware '())
+
   (bootloader (bootloader-configuration
                (bootloader grub-bootloader)
                (target "/dev/vda")))
