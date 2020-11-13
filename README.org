@@ -2,3 +2,14 @@
 #+Author: Peng Mei Yu
 #+Copyright: Copyright 2020 Peng Mei Yu
 #+License: GPLv3
+
+* Deploy Certificates
+  #+begin_src sh
+    certbot register --agree-tos -m admin@guix.org.cn
+  #+end_src
+
+  #+begin_src sh
+    certbot certonly --webroot --webroot-path /var/www -d guix.org.cn -d www.guix.org.cn
+    certbot certonly --webroot --webroot-path /var/www -d ci.guix.org.cn
+    certbot certonly --webroot --webroot-path /var/www -d mirror.guix.org.cn
+  #+end_src
