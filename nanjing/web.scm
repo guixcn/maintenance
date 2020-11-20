@@ -110,6 +110,16 @@
       (raw-content '("return 301 https://guix.org.cn/;")))
 
      (nginx-server-configuration
+      (server-name (list "guix.org.cn"))
+      (listen '("443 ssl" "[::]:443 ssl"))
+      (ssl-certificate "/etc/letsencrypt/live/guix.org.cn/fullchain.pem")
+      (ssl-certificate-key "/etc/letsencrypt/live/guix.org.cn/privkey.pem")
+      (root "/srv/www/guix.org.cn")
+      (locations (list %nginx-status-stub-configuration))
+      (raw-content '("access_log /var/log/nginx/guix.org.cn.access.log;"
+                     "error_log /var/log/nginx/guix.org.cn.error.log;")))
+
+     (nginx-server-configuration
       (server-name (list "mirror.guix.org.cn"))
       (listen '("443 ssl" "[::]:443 ssl"))
       (ssl-certificate "/etc/letsencrypt/live/mirror.guix.org.cn/fullchain.pem")
