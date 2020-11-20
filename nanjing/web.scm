@@ -49,8 +49,8 @@
                                "fetch"))))))
 
 (define %guix-mirror-nginx-location-configurations
-  (let ((upstream "shanghai.guix.org.cn")
-        (domain "mirror.guix.org.cn"))
+  (let* ((upstream "guix-mirror.pengmeiyu.com")
+         (domain upstream))
     (list (nginx-location-configuration
            (uri "~ \\.narinfo$")
            (body (list
