@@ -55,45 +55,62 @@
                                "--git-dir=/srv/git/guix.git"
                                "fetch"))))))
 
+(define %guix-ci-upstream-configuration
+  (nginx-upstream-configuration
+   (name "guix-ci")
+   ;; Repeat server here to force nginx to retry this server when there is an
+   ;; error.
+   (servers '("guix-mirror.pengmeiyu.com:443 max_fails=0"
+              "guix-mirror.pengmeiyu.com:443 max_fails=0"
+              "guix-mirror.pengmeiyu.com:443 max_fails=0"
+              "guix-mirror.pengmeiyu.com:443 max_fails=0"))))
+
 (define %guix-mirror-nginx-location-configurations
-  (let* ((upstream "guix-mirror.pengmeiyu.com")
-         (domain upstream))
+  (let* ((upstream "guix-ci")
+         (domain "guix-mirror.pengmeiyu.com"))
     (list (nginx-location-configuration
            (uri "~ \\.narinfo$")
            (body (list
-                  (string-append "set $upstream \"https://" upstream "\";")
-                  "proxy_pass $upstream;"
+                  (string-append "proxy_pass https://" upstream ";")
+                  (string-append "proxy_set_header Host " domain ";")
                   "proxy_ssl_server_name on;"
                   (string-append "proxy_ssl_name " domain ";")
-                  (string-append "proxy_set_header Host " domain ";")
+
+                  ;; Try next upstream server when there is an error.
+                  "proxy_next_upstream error timeout invalid_header;"
+                  "proxy_next_upstream_timeout 20s;"
+
+                  ;; Die early and try next upstream server.
+                  "proxy_connect_timeout 2s;"
+                  "proxy_read_timeout 3s;"
+                  "proxy_send_timeout 2s;"
 
                   "proxy_cache narinfo;"
                   "proxy_cache_valid 200 206 60d;"
                   "proxy_cache_valid any 5m;"
-                  "proxy_connect_timeout 10s;"
-                  "proxy_read_timeout 10s;"
-                  "proxy_send_timeout 10s;"
-                  "client_body_buffer_size 128k;"
 
                   "proxy_ignore_client_abort on;"
                   "proxy_hide_header Set-Cookie;"
                   "proxy_ignore_headers Set-Cookie;")))
           (nginx-location-configuration
-           (uri "~ ^/nix-cache-info|^/nar/")
+           (uri "~ ^/nar/")
            (body (list
-                  (string-append "set $upstream \"https://" upstream "\";")
-                  "proxy_pass $upstream;"
+                  (string-append "proxy_pass https://" upstream ";")
+                  (string-append "proxy_set_header Host " domain ";")
                   "proxy_ssl_server_name on;"
                   (string-append "proxy_ssl_name " domain ";")
-                  (string-append "proxy_set_header Host " domain ";")
+
+                  ;; Try next upstream server when there is an error.
+                  "proxy_next_upstream error timeout invalid_header;"
+
+                  ;; Die early and try next upstream server.
+                  "proxy_connect_timeout 2s;"
+                  "proxy_read_timeout 30s;"
+                  "proxy_send_timeout 30s;"
 
                   "proxy_cache nar;"
                   "proxy_cache_valid 200 206 60d;"
                   "proxy_cache_valid any 5m;"
-                  "proxy_connect_timeout 60s;"
-                  "proxy_read_timeout 60s;"
-                  "proxy_send_timeout 60s;"
-                  "client_body_buffer_size 256k;"
                   "gzip off;"
 
                   "proxy_ignore_client_abort on;"
@@ -158,6 +175,7 @@
                    ,%nginx-status-stub-configuration))
       (raw-content '("access_log /var/log/nginx/mirror.guix.org.cn.access.log;"
                      "error_log /var/log/nginx/mirror.guix.org.cn.error.log;")))))
+   (upstream-blocks (list %guix-ci-upstream-configuration))
    (extra-content "
 resolver 114.114.114.114 9.9.9.9 ipv6=off;
 
