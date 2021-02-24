@@ -103,6 +103,8 @@
                 (supplementary-groups '("wheel"))
                 (shell (file-append zsh "/bin/zsh")))
                %base-user-accounts))
+  (swap-devices '("/var/swapfile"))
+
 
   (hosts-file
    (plain-file "hosts"
