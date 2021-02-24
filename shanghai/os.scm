@@ -3,11 +3,13 @@
 (use-modules (gnu)
              (gnu packages)
              (gnu system)
-             (guix store))
+             (guix store)
+             (zoo))
 
 (use-package-modules shells)
 (use-service-modules networking nix ssh sysctl web)
 
+(include "monkeys.scm")
 (include "web.scm")
 
 
@@ -16,7 +18,7 @@
               "\x1b[1;37mWelcome to the Guix China server!\x1b[0m\n\n"))
 
 (define %ssh-public-key
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGixg7L7vRFgmxBS2GmI4/UqPw7pERi3qbKFUPaEZIF meiyu")
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGixg7L7vRFgmxBS2GmI4/UqPw7pERi3qbKFUPaEZIF")
 
 (define %substitute-urls
   '("https://mirror.sjtu.edu.cn/guix"
@@ -44,9 +46,7 @@
               (password-authentication? #f)
               (authorized-keys
                `(("root" ,(plain-file "authorized_keys"
-                                      %ssh-public-key))
-                 ("meiyu" ,(plain-file "authorized_keys"
-                                       %ssh-public-key))))))
+                                      %ssh-public-key))))))
     (service sysctl-service-type
              (sysctl-configuration
               (settings '(("net.core.default_qdisc" . "fq")
@@ -56,7 +56,8 @@
               (port 8181)
               (cache "/var/cache/guix/publish")
               (compression '(("lzip" 9)))
-              (ttl (* 30 24 60 60)))))
+              (ttl (* 30 24 60 60))))
+    (service zoo-service-type %monkeys))
    %web-services
    (modify-services %base-services
      (guix-service-type
@@ -96,15 +97,9 @@
                          (options "compress=zstd,subvol=home"))
                        %base-file-systems))
 
-  (users (cons (user-account
-                (name "meiyu")
-                (comment "Peng Mei Yu")
-                (group "users")
-                (supplementary-groups '("wheel"))
-                (shell (file-append zsh "/bin/zsh")))
-               %base-user-accounts))
   (swap-devices '("/var/swapfile"))
 
+  (users %base-user-accounts)
 
   (hosts-file
    (plain-file "hosts"
