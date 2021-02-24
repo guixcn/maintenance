@@ -7,7 +7,7 @@
              (zoo))
 
 (use-package-modules shells)
-(use-service-modules networking nix ssh sysctl web)
+(use-service-modules networking nix ssh sysctl web linux)
 
 (include "monkeys.scm")
 (include "web.scm")
@@ -57,7 +57,8 @@
               (cache "/var/cache/guix/publish")
               (compression '(("lzip" 9)))
               (ttl (* 30 24 60 60))))
-    (service zoo-service-type %monkeys))
+    (service zoo-service-type %monkeys)
+    (service earlyoom-service-type))
    %web-services
    (modify-services %base-services
      (guix-service-type
