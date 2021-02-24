@@ -36,6 +36,9 @@
                         (deploy-hook %nginx-reload))
                        (certificate-configuration
                         (domains '("mirror.guix.org.cn"))
+                        (deploy-hook %nginx-reload))
+                       (certificate-configuration
+                        (domains '("user.guix.org.cn"))
                         (deploy-hook %nginx-reload))))))
 
 (define %git-http-nginx-location-configuration
@@ -101,7 +104,18 @@
       (locations (list %git-http-nginx-location-configuration
                        %nginx-status-stub-configuration))
       (raw-content '("access_log /var/log/nginx/mirror.guix.org.cn.access.log;"
-                     "error_log /var/log/nginx/mirror.guix.org.cn.error.log;")))))))
+                     "error_log /var/log/nginx/mirror.guix.org.cn.error.log;")))
+
+     (nginx-server-configuration
+      (server-name (list "user.guix.org.cn"))
+      (listen '("443 ssl" "[::]:443 ssl"))
+      (ssl-certificate "/etc/letsencrypt/live/user.guix.org.cn/fullchain.pem")
+      (ssl-certificate-key "/etc/letsencrypt/live/user.guix.org.cn/privkey.pem")
+      (root "/srv/www/user")
+      (locations (list %nginx-status-stub-configuration))
+      (raw-content '("autoindex on;"
+                     "access_log /var/log/nginx/user.guix.org.cn.access.log;"
+                     "error_log /var/log/nginx/user.guix.org.cn.error.log;")))))))
 
 (define %web-log-rotations
   (list (log-rotation
