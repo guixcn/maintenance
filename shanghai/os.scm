@@ -1,4 +1,4 @@
-;;; Copyright © 2020 Peng Mei Yu <pengmyu@gmail.com>
+;;; Copyright © 2020-2021 Peng Mei Yu <pengmyu@gmail.com>
 
 (use-modules (gnu)
              (gnu packages)
@@ -19,7 +19,7 @@
   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGixg7L7vRFgmxBS2GmI4/UqPw7pERi3qbKFUPaEZIF meiyu")
 
 (define %substitute-urls
-  '("https://mirror.guix.org.cn"
+  '("https://mirror.sjtu.edu.cn/guix"
     "https://ci.guix.gnu.org"))
 
 (define-public %packages
