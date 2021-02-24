@@ -89,6 +89,11 @@
                          (mount-point "/srv")
                          (type "btrfs")
                          (options "compress=zstd"))
+                       (file-system
+                         (device "/dev/vdb1")
+                         (mount-point "/home")
+                         (type "btrfs")
+                         (options "compress=zstd,subvol=home"))
                        %base-file-systems))
 
   (users (cons (user-account
