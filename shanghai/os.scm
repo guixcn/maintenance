@@ -30,8 +30,8 @@
    (map (compose list specification->package+output)
         '("bind:utils" "btrfs-progs" "certbot" "curl" "dosfstools" "emacs"
           "fish" "git" "gnupg" "guile-readline" "htop" "iftop" "ncurses"
-          "nftables" "nss-certs" "openssh" "pinentry" "python" "rsync" "stow"
-          "tmux" "tree" "wget" "zsh"))))
+          "neofetch" "nftables" "nss-certs" "openssh" "pinentry" "python"
+          "rsync" "stow" "tmux" "tree" "wget" "zsh" ))))
 
 (define %services
   (append
