@@ -28,8 +28,7 @@
   (certbot-configuration
    (email "admin@guix.org.cn")
    (certificates (list (certificate-configuration
-                        (domains '("guix.org.cn"
-                                   "www.guix.org.cn"))
+                        (domains '("guix.org.cn"))
                         (deploy-hook %nginx-reload))
                        (certificate-configuration
                         (domains '("ci.guix.org.cn"))
