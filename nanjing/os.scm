@@ -16,7 +16,7 @@
               "\x1b[1;37mWelcome to the Guix China server!\x1b[0m\n\n"))
 
 (define %ssh-public-key
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGixg7L7vRFgmxBS2GmI4/UqPw7pERi3qbKFUPaEZIF meiyu")
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGixg7L7vRFgmxBS2GmI4/UqPw7pERi3qbKFUPaEZIF")
 
 (define %substitute-urls
   '("https://mirror.sjtu.edu.cn/guix"
@@ -28,8 +28,8 @@
    (map (compose list specification->package+output)
         '("bind:utils" "btrfs-progs" "certbot" "curl" "dosfstools" "emacs"
           "fish" "git" "gnupg" "guile-readline" "htop" "iftop" "ncurses"
-          "nftables" "nss-certs" "openssh" "pinentry" "python" "rsync" "stow"
-          "tmux" "tree" "wget" "zsh"))))
+          "neofetch" "nftables" "nss-certs" "openssh" "pinentry" "python"
+          "rsync" "stow" "tmux" "tree" "wget" "zsh"))))
 
 (define %services
   (append
@@ -44,9 +44,7 @@
               (password-authentication? #f)
               (authorized-keys
                `(("root" ,(plain-file "authorized_keys"
-                                      %ssh-public-key))
-                 ("meiyu" ,(plain-file "authorized_keys"
-                                       %ssh-public-key))))))
+                                      %ssh-public-key))))))
     (service sysctl-service-type
              (sysctl-configuration
               (settings '(("net.core.default_qdisc" . "fq")
@@ -85,19 +83,6 @@
                          (mount-point "/")
                          (type "ext4"))
                        %base-file-systems))
-
-  (users (cons (user-account
-                (name "meiyu")
-                (comment "Peng Mei Yu")
-                (group "users")
-                (supplementary-groups '("wheel"))
-                (shell (file-append zsh "/bin/zsh")))
-               %base-user-accounts))
-
-  (hosts-file
-   (plain-file "hosts"
-               (string-append (local-host-aliases host-name)
-                              "127.0.0.1 mirror.guix.org.cn")))
 
   (packages %packages)
 

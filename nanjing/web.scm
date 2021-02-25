@@ -24,34 +24,6 @@
                                read)))
                     (kill pid SIGHUP))))
 
-(define %certbot-configuration
-  (certbot-configuration
-   (email "admin@guix.org.cn")
-   (certificates (list (certificate-configuration
-                        (domains '("guix.org.cn"
-                                   "www.guix.org.cn"))
-                        (deploy-hook %nginx-reload))
-                       (certificate-configuration
-                        (domains '("mirror.guix.org.cn"))
-                        (deploy-hook %nginx-reload))))))
-
-(define %git-http-nginx-location-configuration
-  (git-http-nginx-location-configuration
-   (git-http-configuration
-    (export-all? #t)
-    (git-root "/srv/git")
-    (uri-path "/git/"))))
-
-(define %git-repository-mirror-jobs
-  (list #~(job '(next-minute (range 0 60 10))
-               #$(program-file
-                  "git-mirror-job"
-                  #~(begin
-                      (setenv "GIT_SSL_CAINFO" "/etc/ssl/certs/ca-certificates.crt")
-                      (system* #$(file-append git "/bin/git")
-                               "--git-dir=/srv/git/guix.git"
-                               "fetch"))))))
-
 (define %nginx-status-stub-configuration
   (nginx-location-configuration
    (uri "/nginx_status")
@@ -66,27 +38,7 @@
      (nginx-server-configuration
       (server-name (list 'default))
       (listen '("80 default_server" "[::]:80 default_server"))
-      (raw-content '("return 301 https://guix.org.cn/;")))
-
-     (nginx-server-configuration
-      (server-name (list "guix.org.cn"))
-      (listen '("443 ssl" "[::]:443 ssl"))
-      (ssl-certificate "/etc/letsencrypt/live/guix.org.cn/fullchain.pem")
-      (ssl-certificate-key "/etc/letsencrypt/live/guix.org.cn/privkey.pem")
-      (root "/srv/www/guix.org.cn")
-      (locations (list %nginx-status-stub-configuration))
-      (raw-content '("access_log /var/log/nginx/guix.org.cn.access.log;"
-                     "error_log /var/log/nginx/guix.org.cn.error.log;")))
-
-     (nginx-server-configuration
-      (server-name (list "mirror.guix.org.cn"))
-      (listen '("443 ssl" "[::]:443 ssl"))
-      (ssl-certificate "/etc/letsencrypt/live/mirror.guix.org.cn/fullchain.pem")
-      (ssl-certificate-key "/etc/letsencrypt/live/mirror.guix.org.cn/privkey.pem")
-      (locations (list %git-http-nginx-location-configuration
-                       %nginx-status-stub-configuration))
-      (raw-content '("access_log /var/log/nginx/mirror.guix.org.cn.access.log;"
-                     "error_log /var/log/nginx/mirror.guix.org.cn.error.log;")))))))
+      (raw-content '("return 301 https://guix.org.cn/;")))))))
 
 (define %web-log-rotations
   (list (log-rotation
@@ -99,12 +51,7 @@
                     "storefile @BASENAME-@YEAR@MONTH@DAY.@COMP_EXT")))))
 
 (define %web-services
-  (list (service certbot-service-type %certbot-configuration)
-        (service fcgiwrap-service-type)
-        (service nginx-service-type %nginx-configuration)
-        (simple-service 'git-repository-mirror-jobs
-                        mcron-service-type
-                        %git-repository-mirror-jobs)
+  (list (service nginx-service-type %nginx-configuration)
         (simple-service 'web-log-rotations
                         rottlog-service-type
                         %web-log-rotations)))
