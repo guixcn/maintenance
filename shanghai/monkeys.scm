@@ -18,7 +18,7 @@
                       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIbLzIHSgPsTHirnDDVteW8gcumLnzizb05syPgLiDve")))
 	(monkey
 	 (name "pandagix")
-	 (comment "PandaGix)
+	 (comment "PandaGix")
 	 (ssh-public-key
 	  (plain-file "pandagix.pub"
 		      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPZ3/HBVQ+t8mtGuYXJUbbKR8yynheYl3RpbIs82ANv2")))
