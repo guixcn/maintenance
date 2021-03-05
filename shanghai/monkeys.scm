@@ -27,4 +27,4 @@
          (comment "c4droid")
          (ssh-public-key
           (plain-file "c4droid.pub"
-                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKIGMbenWCUZo6VDDgeIOEDI6oZh7iDhfC1QWiTW/74e")))))
+                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlfAalEYpKNamHSye6fdiQXziKPhh8JI/jgt/ItI8eo")))))
