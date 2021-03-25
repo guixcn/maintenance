@@ -6,7 +6,7 @@
              (guix store)
              (zoo))
 
-(use-package-modules shells)
+(use-package-modules linux shells)
 (use-service-modules networking nix ssh sysctl web linux)
 
 (include "monkeys.scm")
@@ -75,7 +75,7 @@
   (timezone "Asia/Shanghai")
   (locale "en_US.UTF-8")
 
-  (firmware '())
+  (kernel linux-libre-lts)
 
   (bootloader (bootloader-configuration
                (bootloader grub-bootloader)
