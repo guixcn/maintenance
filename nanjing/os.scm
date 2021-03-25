@@ -45,16 +45,15 @@
               (authorized-keys
                `(("root" ,(plain-file "authorized_keys"
                                       %ssh-public-key))))))
-    (service sysctl-service-type
-             (sysctl-configuration
-              (settings '(("net.core.default_qdisc" . "fq")
-                          ("net.ipv4.tcp_congestion_control" . "bbr")))))
     (service guix-publish-service-type
              (guix-publish-configuration
               (port 8181)
               (cache "/var/cache/guix/publish")
               (compression '(("lzip" 9)))
-              (ttl (* 30 24 60 60)))))
+              (ttl (* 30 24 60 60))))
+    (simple-service 'sysctl-settings sysctl-service-type
+                    '(("net.core.default_qdisc" . "fq")
+                      ("net.ipv4.tcp_congestion_control" . "bbr"))))
    %web-services
    (modify-services %base-services
      (guix-service-type
