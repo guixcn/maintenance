@@ -6,7 +6,7 @@
              (guix store)
              (zoo))
 
-(use-package-modules linux shells)
+(use-package-modules bash linux shells)
 (use-service-modules networking nix ssh sysctl web linux)
 
 (include "monkeys.scm")
@@ -17,8 +17,17 @@
   (plain-file "motd"
               "\x1b[1;37mWelcome to the Guix China server!\x1b[0m\n\n"))
 
-(define %ssh-public-key
+(define %root-ssh-public-key
   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGixg7L7vRFgmxBS2GmI4/UqPw7pERi3qbKFUPaEZIF")
+
+(define %bots
+  (list (bot
+         (name "github")
+         (comment "GitHub bot")
+         (shell (file-append bash "/bin/bash"))
+         (ssh-public-key
+          (plain-file "github.pub"
+                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDDcJqdm4yqZdcz4IAN00gEkHf7XU1+IH0ehiFi0CZWU")))))
 
 (define %substitute-urls
   '("https://mirror.sjtu.edu.cn/guix"
@@ -46,14 +55,14 @@
               (password-authentication? #f)
               (authorized-keys
                `(("root" ,(plain-file "authorized_keys"
-                                      %ssh-public-key))))))
+                                      %root-ssh-public-key))))))
     (service guix-publish-service-type
              (guix-publish-configuration
               (port 8181)
               (cache "/var/cache/guix/publish")
               (compression '(("lzip" 9)))
               (ttl (* 30 24 60 60))))
-    (service zoo-service-type %monkeys)
+    (service zoo-service-type (append %bots %monkeys))
     (service earlyoom-service-type)
     (simple-service 'sysctl-settings sysctl-service-type
                     '(("net.core.default_qdisc" . "fq")
