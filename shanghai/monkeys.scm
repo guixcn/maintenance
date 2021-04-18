@@ -27,4 +27,10 @@
          (comment "c4droid")
          (ssh-public-key
           (plain-file "c4droid.pub"
-                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlfAalEYpKNamHSye6fdiQXziKPhh8JI/jgt/ItI8eo")))))
+                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlfAalEYpKNamHSye6fdiQXziKPhh8JI/jgt/ItI8eo")))
+        (monkey
+         (name "Z572")
+         (comment "Z572")
+         (ssh-public-key
+          (plain-file "z572.pub"
+                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGGhcSQkHGf5XMWt5iRlrpHvrViHuZ7ApnU88IRETbF")))))
