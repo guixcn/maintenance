@@ -3,6 +3,12 @@
 #+Copyright: Copyright 2020-2021 Peng Mei Yu
 #+License: GPLv3
 
+* Update operating systems
+  #+begin_src sh
+    guix pull
+    guix system -L modules reconfigure shanghai/os.scm
+  #+end_src
+
 * Deploy Certificates
   #+begin_src sh
     certbot register --agree-tos -m admin@guix.org.cn
