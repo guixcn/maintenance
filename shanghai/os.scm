@@ -7,7 +7,7 @@
              (zoo))
 
 (use-package-modules bash linux shells)
-(use-service-modules networking nix ssh sysctl web linux)
+(use-service-modules desktop networking nix ssh sysctl web linux)
 
 (include "monkeys.scm")
 (include "web.scm")
@@ -45,6 +45,7 @@
 (define %services
   (append
    (list
+    (service elogind-service-type)
     (service dhcp-client-service-type)
     (service nftables-service-type
              (nftables-configuration (ruleset (local-file "nftables.conf"))))
