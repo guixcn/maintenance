@@ -52,7 +52,7 @@
     (service nix-service-type)
     (service openssh-service-type
              (openssh-configuration
-              (permit-root-login 'without-password)
+              (permit-root-login 'prohibit-password)
               (password-authentication? #f)
               (authorized-keys
                `(("root" ,(plain-file "authorized_keys"
