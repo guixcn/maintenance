@@ -33,4 +33,10 @@
          (comment "Z572")
          (ssh-public-key
           (plain-file "z572.pub"
-                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGGhcSQkHGf5XMWt5iRlrpHvrViHuZ7ApnU88IRETbF")))))
+                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKGGhcSQkHGf5XMWt5iRlrpHvrViHuZ7ApnU88IRETbF")))
+	(monkey
+	  (name "gukig")
+	  (comment "Gukig Gao")
+	  (ssh-public-key
+	    (plain-file "gukig.pub"
+			"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKISWkTOqTxPbadbuas9v34DUI/ZR3bG3z7AuTKlPaTa")))))
