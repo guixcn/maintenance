@@ -78,7 +78,7 @@
       (listen '("443 ssl" "[::]:443 ssl"))
       (ssl-certificate "/etc/letsencrypt/live/guix.org.cn/fullchain.pem")
       (ssl-certificate-key "/etc/letsencrypt/live/guix.org.cn/privkey.pem")
-      (root "/srv/www/guix.org.cn")
+      (root "/srv/http/guix.org.cn")
       (locations (list %nginx-status-stub-configuration))
       (raw-content '("access_log /var/log/nginx/guix.org.cn.access.log;"
                      "error_log /var/log/nginx/guix.org.cn.error.log;")))
@@ -110,7 +110,7 @@
       (listen '("443 ssl" "[::]:443 ssl"))
       (ssl-certificate "/etc/letsencrypt/live/user.guix.org.cn/fullchain.pem")
       (ssl-certificate-key "/etc/letsencrypt/live/user.guix.org.cn/privkey.pem")
-      (root "/srv/www/user")
+      (root "/srv/http/user")
       (locations (list %nginx-status-stub-configuration))
       (raw-content '("autoindex on;"
                      "access_log /var/log/nginx/user.guix.org.cn.access.log;"
