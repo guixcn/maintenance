@@ -30,7 +30,7 @@
                       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDDcJqdm4yqZdcz4IAN00gEkHf7XU1+IH0ehiFi0CZWU")))))
 
 (define %substitute-urls
-  (append '("https://mirror.sjtu.edu.cn/guix")
+  (append '("https://mirror.sjtu.edu.cn/guix/")
           %default-substitute-urls))
 
 (define-public %packages

@@ -19,7 +19,7 @@
   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICGixg7L7vRFgmxBS2GmI4/UqPw7pERi3qbKFUPaEZIF")
 
 (define %substitute-urls
-  '("https://mirror.sjtu.edu.cn/guix"
+  '("https://mirror.sjtu.edu.cn/guix/"
     "https://ci.guix.gnu.org"))
 
 (define-public %packages
