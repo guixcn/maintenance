@@ -107,7 +107,8 @@
                          (options "compress=zstd,subvol=home"))
                        %base-file-systems))
 
-  (swap-devices '("/var/swapfile"))
+  (swap-devices (list (swap-space
+                       (target "/var/swapfile"))))
 
   (users %base-user-accounts)
 
