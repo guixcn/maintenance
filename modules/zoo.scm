@@ -1,4 +1,4 @@
-;;; Copyright © 2021 Peng Mei Yu <pengmyu@gmail.com>
+;;; Copyright © 2021-2023 Peng Mei Yu <pmy@xqzp.net>
 
 (define-module (zoo)
   #:use-module (guix gexp)
@@ -85,4 +85,5 @@
                                        (map animal->account lst))))
           (service-extension openssh-service-type
                              (lambda (lst)
-                               (filter-map animal->authorized-key lst)))))))
+                               (filter-map animal->authorized-key lst)))))
+   (description "User accounts.")))
