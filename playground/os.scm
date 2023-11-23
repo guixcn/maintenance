@@ -111,6 +111,9 @@
   (swap-devices (list (swap-space
                        (target "/var/swapfile"))))
 
+  (sudoers-file (plain-file "etc-sudoers"
+                            "root ALL=(ALL) ALL\n%wheel ALL=(ALL) NOPASSWD: ALL\n"))
+
   (users %base-user-accounts)
 
   (packages %packages)
