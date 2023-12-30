@@ -48,4 +48,10 @@
          (comment "Minung Kuo")
          (ssh-public-key
           (plain-file "minung.pub"
-                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJbadWYTSurbHn+u1t0FEbmzOPM05/wsYPQ0AGOElNRu")))))
+                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJbadWYTSurbHn+u1t0FEbmzOPM05/wsYPQ0AGOElNRu")))
+	(monkey 
+         (name "spuch")
+         (comment "picospuch")
+         (ssh-public-key
+          (plain-file "spuch.pub"
+                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGYruQYL5dSNIUgYpzZBWueIJv6bEaAFj56pKhA6Keje")))))
